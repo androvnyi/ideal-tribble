@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: devops-pipeline-app
+  labels:
+    app: devops-pipeline-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: devops-pipeline-app
+  template:
+    metadata:
+      labels:
+        app: devops-pipeline-app
+    spec:
+      containers:
+        - name: app
+          image: registry.gitlab.com/and1one/ideal-tribble:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 5000
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 5000
+            initialDelaySeconds: 5
+            periodSeconds: 10
